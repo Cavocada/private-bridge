@@ -1,0 +1,41 @@
+{
+	"Chains": [
+		{
+			"name": "Findora",
+			"type": "ethereum",
+			"id": "0",
+			"endpoint": "https://prod-testnet.prod.findora.org:8545/",
+			"from": "0x169504A3F5Ea27252b371ff4Db7C5a33dfF2FD16",
+			"opts": {
+				"bridge": "",
+				"erc20Handler": "",
+				"genericHandler": "",
+				"gasLimit": "1000000",
+				"maxGasPrice": "100000000000",
+				"startBlock": "0",
+                "executeWatchLimit": "100",
+				"blockConfirmations": "1",
+				"http": "true"
+			}
+		},
+		{
+			"name": "Base",
+			"type": "ethereum",
+			"id": "1",
+			"endpoint": "https://goerli.base.org",
+			"from": "0x169504A3F5Ea27252b371ff4Db7C5a33dfF2FD16",
+			"opts": {
+				"bridge": "",
+				"erc20Handler": "",
+				"genericHandler": "",
+				"gasLimit": "1000000",
+				"maxGasPrice": "60000000000",
+                "gasMultiplier": "1.0",
+				"startBlock": "0",
+                "executeWatchLimit": "1600",
+				"blockConfirmations": "1",
+				"http": "true"
+			}
+		}
+	]
+}

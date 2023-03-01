@@ -1,0 +1,32 @@
+version: '3'
+
+networks:
+  private-bridge:
+
+services:
+  private-bridge-relayer0:
+    image: ghcr.io/findoranetwork/chainbridge:f1.1.501
+    container_name: relayer0
+    restart: always
+    environment:
+      - KEYSTORE_PASSWORD=123
+    command: --config /config/config.json --verbosity info --metrics --metricsPort 8000
+    volumes:
+      - ./blockstore/relayer0:/root/.chainbridge
+      - ./config/config0.json:/config/config.json
+      - ./keys/0x169504A3F5Ea27252b371ff4Db7C5a33dfF2FD16.key:/keys/0x169504A3F5Ea27252b371ff4Db7C5a33dfF2FD16.key
+    networks:
+      - private-bridge
+  private-bridge-relayer1:
+    image: ghcr.io/findoranetwork/chainbridge:f1.1.501
+    container_name: relayer1
+    restart: always
+    environment:
+      - KEYSTORE_PASSWORD=123
+    command: --config /config/config.json --verbosity info --metrics --metricsPort 8001
+    volumes:
+      - ./blockstore/relayer1:/root/.chainbridge
+      - ./config/config1.json:/config/config.json
+      - ./keys/0xE46ed0256692f3D2b755c10109b60Cec9cf87512.key:/keys/0xE46ed0256692f3D2b755c10109b60Cec9cf87512.key
+    networks:
+      - private-bridge
