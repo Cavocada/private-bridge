@@ -10,7 +10,7 @@ services:
     restart: always
     environment:
       - KEYSTORE_PASSWORD=123
-    command: --config /config/config.json --verbosity info --metrics --metricsPort 8000
+    command: --config /config/config.json --verbosity info --latest --metrics --metricsPort 8000
     volumes:
       - ./blockstore/relayer0:/root/.chainbridge
       - ./config/config0.json:/config/config.json
@@ -23,10 +23,10 @@ services:
     restart: always
     environment:
       - KEYSTORE_PASSWORD=123
-    command: --config /config/config.json --verbosity info --metrics --metricsPort 8001
+    command: --config /config/config.json --verbosity info --latest --metrics --metricsPort 8001
     volumes:
       - ./blockstore/relayer1:/root/.chainbridge
       - ./config/config1.json:/config/config.json
-      - ./keys/0xE46ed0256692f3D2b755c10109b60Cec9cf87512.key:/keys/0xE46ed0256692f3D2b755c10109b60Cec9cf87512.key
+      - ./keys/0xE2E2a99Dbc0E004D013d934c2756cb6C90B00cF2.key:/keys/0xE2E2a99Dbc0E004D013d934c2756cb6C90B00cF2.key
     networks:
       - private-bridge

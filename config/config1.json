@@ -1,16 +1,16 @@
 {
 	"Chains": [
 		{
-			"name": "Findora",
+			"name": "Forge",
 			"type": "ethereum",
 			"id": "0",
-			"endpoint": "https://prod-testnet.prod.findora.org:8545/",
-			"from": "0xE46ed0256692f3D2b755c10109b60Cec9cf87512",
+			"endpoint": "https://prod-forge.prod.findora.org:8545/",
+			"from": "0xE2E2a99Dbc0E004D013d934c2756cb6C90B00cF2",
 			"opts": {
-				"bridge": "",
-				"erc20Handler": "",
-				"genericHandler": "",
-				"gasLimit": "1000000",
+				"bridge": "0xD520c4eaEe94AEa1C74b2bdfD0A60F7F1662EFEc",
+				"erc20Handler": "0x656DF8FA08e32563184C8f1f0a3fF5808C4F1BBb",
+				"genericHandler": "0x656DF8FA08e32563184C8f1f0a3fF5808C4F1BBb",
+				"gasLimit": "10000000",
 				"maxGasPrice": "100000000000",
 				"startBlock": "0",
                 "executeWatchLimit": "100",
@@ -19,20 +19,20 @@
 			}
 		},
 		{
-			"name": "Mumbai",
+			"name": "Goerli",
 			"type": "ethereum",
 			"id": "1",
 			"endpoint": "https://goerli.base.org",
-			"from": "0xE46ed0256692f3D2b755c10109b60Cec9cf87512",
+			"from": "0xE2E2a99Dbc0E004D013d934c2756cb6C90B00cF2",
 			"opts": {
-				"bridge": "",
-				"erc20Handler": "",
-				"genericHandler": "",
-				"gasLimit": "1000000",
-				"maxGasPrice": "60000000000",
-				"gasMultiplier": "1.0",
+				"bridge": "0xD520c4eaEe94AEa1C74b2bdfD0A60F7F1662EFEc",
+				"erc20Handler": "0x656DF8FA08e32563184C8f1f0a3fF5808C4F1BBb",
+				"genericHandler": "0x656DF8FA08e32563184C8f1f0a3fF5808C4F1BBb",
+				"gasLimit": "10000000",
+				"maxGasPrice": "100000000000",
+                "gasMultiplier": "1.5",
 				"startBlock": "0",
-                "executeWatchLimit": "1600",
+                "executeWatchLimit": "800",
 				"blockConfirmations": "1",
 				"http": "true"
 			}

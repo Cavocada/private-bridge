@@ -1,4 +1,4 @@
-# Coinbase <=> Findora ChainBridge Deploy
+# Coinbase Goerli <=> Findora Forge Deploy
 
 ## Prerequisites
 - Go 1.15+ installation or later
@@ -34,15 +34,15 @@ You can generate it in a way you think is safe, and then save the private key an
 Testing accounts are provided in the `wallet`.
 
 ### Set chainbridge vars
-To avoid duplication in the subsequent commands set the following env vars in your shell:
+To avoid duplication in the subsequent commands set the following env vars in your shell.
 ```
 SRC_GATEWAY=https://prod-forge.prod.findora.org:8545/
 DST_GATEWAY=https://goerli.base.org:8545/
 
-SRC_ADDR="<relayers public key on Findora>"
-SRC_PK="<deployer private key on Findora>"
-DST_ADDR="<relayers public key on Base>"
-DST_PK="<deployer private key on Base>"
+SRC_ADDR="<relayers public key on Findora Forge>"
+SRC_PK="<deployer private key on Findora Forge>"
+DST_ADDR="<relayers public key on Base Goerli>"
+DST_PK="<deployer private key on Base Goerli>"
 
 SRC_TOKEN="0x5b15Cdff7Fe65161C377eDeDc34A4E4E31ffb00B"
 ```
@@ -51,7 +51,7 @@ You could also write the above to a file (e.g. `vars-base-gorlie.sh`) and load i
 
 #### Steps
 1. Deploy contracts on Findora Forge testnet
-The following command will deploy the bridge contract and ERC20 handler contract in Findora testnet.
+The following command will deploy the bridge contract and ERC20 handler contract in Forge testnet.
 
 *Note: Findora network min gas price is 100 Gwei*
 ```
@@ -73,21 +73,21 @@ Url:        https://prod-forge.prod.findora.org:8545/
 Deployer:   0x3E5D560d2Ab3006fBDA617663B28ABFc0382086e
 Gas Limit:   8000000
 Gas Price:   10000000000
-Deploy Cost: 0.0593005
+Deploy Cost: 0.05879326
 
 Options
 =======
 Chain Id:    0
-Threshold:   2
-Relayers:    0x169504A3F5Ea27252b371ff4Db7C5a33dfF2FD16,0xE2E2a99Dbc0E004D013d934c2756cb6C90B00cF2,0xE46ed0256692f3D2b755c10109b60Cec9cf87512
+Threshold:   1
+Relayers:    0x169504A3F5Ea27252b371ff4Db7C5a33dfF2FD16,0xE2E2a99Dbc0E004D013d934c2756cb6C90B00cF2
 Bridge Fee:  0
 Expiry:      100
 
 Contract Addresses
 ================================================================
-Bridge:             0x3Fc97AB0965eAe6F59a7D3AF65A20EcD9144B74e
+Bridge:             0xD520c4eaEe94AEa1C74b2bdfD0A60F7F1662EFEc
 ----------------------------------------------------------------
-Erc20 Handler:      0x6930a96496eBbD4F2Dd3d8fcdFf979e204873e37
+Erc20 Handler:      0x656DF8FA08e32563184C8f1f0a3fF5808C4F1BBb
 ----------------------------------------------------------------
 Erc721 Handler:     Not Deployed
 ----------------------------------------------------------------
@@ -104,12 +104,12 @@ WETC:               Not Deployed
 ```
 Take note of the output of the above command and assign the following variables to `vars-base-gorlie.sh`. Run `source vars-base-gorlie.sh` to update environment variables. To confirm the updated environment variables, run `./show-vars.sh`
 ```
-SRC_BRIDGE="<resulting bridge contract address>"
-SRC_HANDLER="<resulting erc20 handler contract address>"
+SRC_BRIDGE="0xD520c4eaEe94AEa1C74b2bdfD0A60F7F1662EFEc"
+SRC_HANDLER="0x656DF8FA08e32563184C8f1f0a3fF5808C4F1BBb"
 ```
 
-2. Configure contracts in Findora testnet
-The following registers the zkUSDT token as a resource with a bridge contract and configures which handler to use.
+2. Configure contracts in Findora Forge
+The following registers the `zkUSDT` token as a resource with a bridge contract and configures which handler to use.
 ```
 cb-sol-cli --url $SRC_GATEWAY --privateKey $SRC_PK --gasPrice 10000000000 bridge register-resource \
     --bridge $SRC_BRIDGE \
@@ -119,21 +119,22 @@ cb-sol-cli --url $SRC_GATEWAY --privateKey $SRC_PK --gasPrice 10000000000 bridge
 ```
 output:
 ```
-[bridge/register-resource] Registering contract 0x5b15Cdff7Fe65161C377eDeDc34A4E4E31ffb00B with resource ID 0x000000000000000000000000000000a16ebe4a02bbccc786776a9388ff000000 on handler 0x6930a96496eBbD4F2Dd3d8fcdFf979e204873e37
-Waiting for tx: 0x39f64b7b099b32d580ce8fd49655e73bce4e4f2239654112bb78238fa42c5b81...
+[bridge/register-resource] Registering contract 0x5b15Cdff7Fe65161C377eDeDc34A4E4E31ffb00B with resource ID 0x000000000000000000000000000000a16ebe4a02bbccc786776a9388ff000000 on handler 0x656DF8FA08e32563184C8f1f0a3fF5808C4F1BBb
+Waiting for tx: 0xc098f9ae85ff063bb4a5ba366d1064da0718a7c97ee7b368a44d905daaa291b1...
 ```
 
 3. Deploy contracts on Base Gorlie testnet
 
-The following command deploys the bridge contract, handler and a new ERC20 contract (zkUSDT.f) on the destination chain.
+The following command deploys the bridge contract, handler and a new ERC20 contract (`zkUSDT.f`) on the destination chain.
 ```
-cb-sol-cli --url $DST_GATEWAY --privateKey $DST_PK --gasPrice 10000000000 deploy \
-    --erc20Name "ZK USDT" \
-    --erc20Symbol zkUSDT \
+cb-sol-cli --url $DST_GATEWAY --privateKey $DST_PK --gasPrice 2000000000 deploy \
+    --erc20Decimals 6 \
+    --erc20Name "Zero Knowledge USDT" \
+    --erc20Symbol zkUSDT.f \
     --bridge --erc20 --erc20Handler \
     --relayers $DST_ADDR \
     --relayerThreshold 1 \
-    --expiry 1600 \
+    --expiry 800 \
     --chainId 1
 ```
 output:
@@ -147,28 +148,28 @@ Deploying contracts...
 Url:        https://goerli.base.org
 Deployer:   0x3E5D560d2Ab3006fBDA617663B28ABFc0382086e
 Gas Limit:   8000000
-Gas Price:   10000000000
-Deploy Cost: 0.07675332
+Gas Price:   2000000000
+Deploy Cost: 0.022394793147517584
 
 Options
 =======
-Chain Id:    3
-Threshold:   2
+Chain Id:    1
+Threshold:   1
 Relayers:    0x169504A3F5Ea27252b371ff4Db7C5a33dfF2FD16,0xE2E2a99Dbc0E004D013d934c2756cb6C90B00cF2
 Bridge Fee:  0
-Expiry:      1600
+Expiry:      800
 
 Contract Addresses
 ================================================================
-Bridge:             0xaD2E89F29633384cC33FeBc7Fe6D7E3Be3cf7013
+Bridge:             0xD520c4eaEe94AEa1C74b2bdfD0A60F7F1662EFEc
 ----------------------------------------------------------------
-Erc20 Handler:      0xc20c0e5Aca043Fff095F153379760eBdEEe42ECe
+Erc20 Handler:      0x656DF8FA08e32563184C8f1f0a3fF5808C4F1BBb
 ----------------------------------------------------------------
 Erc721 Handler:     Not Deployed
 ----------------------------------------------------------------
 Generic Handler:    Not Deployed
 ----------------------------------------------------------------
-Erc20:              0x5b7666054Cfac6C449ED0eE41Ea76b05518B492f
+Erc20:              0x74e918F18b1260728d92A2606a46521D7Db490d0
 ----------------------------------------------------------------
 Erc721:             Not Deployed
 ----------------------------------------------------------------
@@ -183,9 +184,9 @@ source vars-base-gorlie.sh
 ```
 to update environment variables. To confirm the updated environment variables, run `./show-vars.sh`.
 ```
-DST_BRIDGE="<resulting bridge contract address>"
-DST_HANDLER="<resulting erc20 handler contract address>"
-DST_TOKEN="<resulting erc20 token address>"
+DST_BRIDGE="0xD520c4eaEe94AEa1C74b2bdfD0A60F7F1662EFEc"
+DST_HANDLER="0x656DF8FA08e32563184C8f1f0a3fF5808C4F1BBb"
+DST_TOKEN="0x74e918F18b1260728d92A2606a46521D7Db490d0"
 ```
 
 Final vars-bsc-testnet.sh
@@ -196,34 +197,34 @@ DST_GATEWAY=https://goerli.base.org
 SRC_ADDR="0x169504A3F5Ea27252b371ff4Db7C5a33dfF2FD16","0xE2E2a99Dbc0E004D013d934c2756cb6C90B00cF2"
 DST_ADDR="0x169504A3F5Ea27252b371ff4Db7C5a33dfF2FD16","0xE2E2a99Dbc0E004D013d934c2756cb6C90B00cF2"
 
-SRC_BRIDGE=""
-SRC_HANDLER=""
+SRC_BRIDGE="0xD520c4eaEe94AEa1C74b2bdfD0A60F7F1662EFEc"
+SRC_HANDLER="0x656DF8FA08e32563184C8f1f0a3fF5808C4F1BBb"
 SRC_TOKEN="0x5b15Cdff7Fe65161C377eDeDc34A4E4E31ffb00B"
 
-DST_BRIDGE=""
-DST_HANDLER=""
-DST_TOKEN=""
+DST_BRIDGE="0xD520c4eaEe94AEa1C74b2bdfD0A60F7F1662EFEc"
+DST_HANDLER="0x656DF8FA08e32563184C8f1f0a3fF5808C4F1BBb"
+DST_TOKEN="0x74e918F18b1260728d92A2606a46521D7Db490d0"
 ```
 
 4. Configure contracts on Base Gorlie testnet
-The following registers the new token (zkUSDT.f) as a resource on the bridge similar to the above.
+The following registers the new token (`zkUSDT.f`) as a resource on the bridge similar to the above.
 ```
-cb-sol-cli --url $DST_GATEWAY --privateKey $DST_PK --gasPrice 10000000000 bridge register-resource \
+cb-sol-cli --url $DST_GATEWAY --privateKey $DST_PK --gasPrice 2000000000 bridge register-resource \
     --bridge $DST_BRIDGE \
     --handler $DST_HANDLER \
     --resourceId $RESOURCE_ID_ZK_USDT \
     --targetContract $DST_TOKEN
 ```
-The following registers the token as mintable/burnable on the bridge.
+The following registers the token as burnable on the bridge.
 ```
-cb-sol-cli --url $DST_GATEWAY --privateKey $DST_PK --gasPrice 10000000000 bridge set-burn \
+cb-sol-cli --url $DST_GATEWAY --privateKey $DST_PK --gasPrice 2000000000 bridge set-burn \
     --bridge $DST_BRIDGE \
     --handler $DST_HANDLER \
     --tokenContract $DST_TOKEN
 ```
-The following gives permission for the handler to mint new zkUSDT.f (ERC-20) tokens.
+The following gives permission for the handler to mint new `zkUSDT.f` (ERC-20) tokens.
 ```
-cb-sol-cli --url $DST_GATEWAY --privateKey $DST_PK --gasPrice 10000000000 erc20 add-minter \
+cb-sol-cli --url $DST_GATEWAY --privateKey $DST_PK --gasPrice 2000000000 erc20 add-minter \
     --minter $DST_HANDLER \
     --erc20Address $DST_TOKEN
 ```
@@ -232,18 +233,13 @@ cb-sol-cli --url $DST_GATEWAY --privateKey $DST_PK --gasPrice 10000000000 erc20 
 The relayer maintains its own keystore. Run following command to import relayer's key and enter a password when prompted.
 Make sure to run this command for each relayer.
 ```
-chainbridge accounts import --privateKey [YOUR RELAYER'S PRIVATE KEY]
-
-For Ex.
 chainbridge accounts import --privateKey e93d230575cf6d080b6ed2ae34f27f6f6751b0b08dd34d3083ae37637ffa7bda
 ```
 
-## Lets test our bridge!
+## Lets test the bridge!
 ### Start relayers
 Before starting your relayers, make sure your docker-compose file is updated with the correct key files along with their passwords.
-You will also need to allocate a volume for the blockstore in order to reduce memory usage in the
-container.
-
+You will also need to allocate a volume for the blockstore in order to reduce memory usage in the container.
 
 For Ex. 
 
