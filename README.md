@@ -19,11 +19,8 @@ git clone -b v1.0.2 --depth 1 https://github.com/Cavocada/chainbridge-tools \
 && make install
 ```
 
-### chainbridge
-The ChainBridge binary will be required for inserting relay keys into the keystore. It can be built from here:
-[chainbridge](https://github.com/ChainSafe/chainbridge-deploy/tree/main/cfgBuilder).
+### Bridge architecture
 
-### architecture and roles
 Client: User initiates cross-chain transfer — The beginning of a transaction
 
 Relayers: The message routing system to pass information from the source chain to the destination chain
