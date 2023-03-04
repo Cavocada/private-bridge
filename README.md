@@ -1,4 +1,4 @@
-# Base Goerli <=> Findora Forge Deploy
+# Base Goerli <=> Findora Forge
 
 ## Prerequisites
 - Go 1.15+ installation or later
