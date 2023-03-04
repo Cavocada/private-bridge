@@ -1,4 +1,4 @@
-# Coinbase Goerli <=> Findora Forge Deploy
+# Base Goerli <=> Findora Forge Deploy
 
 ## Prerequisites
 - Go 1.15+ installation or later
