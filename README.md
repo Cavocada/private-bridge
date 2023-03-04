@@ -19,13 +19,19 @@ git clone -b v1.0.2 --depth 1 https://github.com/Cavocada/chainbridge-tools \
 && make install
 ```
 
-### cfgBuilder
-The config builder will be required to generate configuration files for the relayers. It can be built from here:
-[cfgBuilder](https://github.com/Cavocada/chainbridge-tools/tree/main/cfgBuilder).
-
 ### chainbridge
 The ChainBridge binary will be required for inserting relay keys into the keystore. It can be built from here:
 [chainbridge](https://github.com/ChainSafe/chainbridge-deploy/tree/main/cfgBuilder).
+
+### architecture and roles
+Client: User initiates cross-chain transfer — The beginning of a transaction
+
+Relayers: The message routing system to pass information from the source chain to the destination chain
+
+Destination Chain — The destination chain of the asset to be moved to
+
+<img width="970" alt="architecture" src="https://user-images.githubusercontent.com/109700451/222875352-a741e830-2445-4ce6-953b-0c270f12384d.png">
+
 
 ## Getting started
 
@@ -44,6 +50,7 @@ SRC_PK="<deployer private key on Findora Forge>"
 DST_ADDR="<relayers public key on Base Goerli>"
 DST_PK="<deployer private key on Base Goerli>"
 
+# the zkUSDT token
 SRC_TOKEN="0x5b15Cdff7Fe65161C377eDeDc34A4E4E31ffb00B"
 ```
 You could also write the above to a file (e.g. `vars-base-gorlie.sh`) and load it into your shell by running `source vars-base-gorlie.sh`.
@@ -88,18 +95,6 @@ Contract Addresses
 Bridge:             0xD520c4eaEe94AEa1C74b2bdfD0A60F7F1662EFEc
 ----------------------------------------------------------------
 Erc20 Handler:      0x656DF8FA08e32563184C8f1f0a3fF5808C4F1BBb
-----------------------------------------------------------------
-Erc721 Handler:     Not Deployed
-----------------------------------------------------------------
-Generic Handler:    Not Deployed
-----------------------------------------------------------------
-Erc20:              Not Deployed
-----------------------------------------------------------------
-Erc721:             Not Deployed
-----------------------------------------------------------------
-Centrifuge Asset:   Not Deployed
-----------------------------------------------------------------
-WETC:               Not Deployed
 ================================================================
 ```
 Take note of the output of the above command and assign the following variables to `vars-base-gorlie.sh`. Run `source vars-base-gorlie.sh` to update environment variables. To confirm the updated environment variables, run `./show-vars.sh`
@@ -165,17 +160,7 @@ Bridge:             0xD520c4eaEe94AEa1C74b2bdfD0A60F7F1662EFEc
 ----------------------------------------------------------------
 Erc20 Handler:      0x656DF8FA08e32563184C8f1f0a3fF5808C4F1BBb
 ----------------------------------------------------------------
-Erc721 Handler:     Not Deployed
-----------------------------------------------------------------
-Generic Handler:    Not Deployed
-----------------------------------------------------------------
 Erc20:              0x74e918F18b1260728d92A2606a46521D7Db490d0
-----------------------------------------------------------------
-Erc721:             Not Deployed
-----------------------------------------------------------------
-Centrifuge Asset:   Not Deployed
-----------------------------------------------------------------
-WETC:               Not Deployed
 ================================================================
 ```
 Again, assign the following env variables to `vars-base-gorlie.sh` and run
