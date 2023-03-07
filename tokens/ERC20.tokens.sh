@@ -2,4 +2,4 @@
 
 export zkUSDT="0x5b15Cdff7Fe65161C377eDeDc34A4E4E31ffb00B"
 
-export zkUSDT_f=""
+export zkUSDT_f="0x74e918F18b1260728d92A2606a46521D7Db490d0"
